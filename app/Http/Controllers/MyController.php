@@ -84,14 +84,14 @@ class MyController extends Controller
     public function nuevoProducto($id, $fk_unidad, $descripcion, $utilidad, $costo, $precio_venta)
     {
         $resultado = DB::insert('insert into producto (id, fk_unidad, descripcion, utilidad, costo, precio_venta) values (?, ?, ?, ?, ?, ?)', [$id, $fk_unidad, $descripcion, $utilidad, $costo, $precio_venta]);
-        //return response()->json_string = json_encode($resultado);
-        return response()->json(["Producto" => $resultado]);
+        return response()->json_string = json_encode($resultado);
     }
 
     public function getProductos()
     {
         $resultado = DB::select('select * from producto');
-        return response()->json_string = json_encode($resultado);
+        //return response()->json_string = json_encode($resultado);
+        return response()->json(["Producto" => $resultado]);
     }
 
     public function getProductoXid($id)
