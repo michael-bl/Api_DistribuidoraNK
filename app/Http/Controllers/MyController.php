@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Cliente;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class MyController extends Controller
 {
@@ -82,7 +84,8 @@ class MyController extends Controller
     public function nuevoProducto($id, $fk_unidad, $descripcion, $utilidad, $costo, $precio_venta)
     {
         $resultado = DB::insert('insert into producto (id, fk_unidad, descripcion, utilidad, costo, precio_venta) values (?, ?, ?, ?, ?, ?)', [$id, $fk_unidad, $descripcion, $utilidad, $costo, $precio_venta]);
-        return response()->json_string = json_encode($resultado);
+        //return response()->json_string = json_encode($resultado);
+        return response()->json(["Producto" => $resultado]);
     }
 
     public function getProductos()
@@ -116,6 +119,35 @@ class MyController extends Controller
     {
         $resultado = DB::insert('insert into cliente (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
         return response()->json_string = json_encode($resultado);
+    }
+
+    public function nuevoCliente2(Request $request)
+    {
+        $id = $request->id;
+        $email = $request->email;
+        $accion = $request->accion;
+        $nombre = $request->nombre;
+        $telefono = $request->telefono;
+        $direccion = $request->direccion;
+        $fk_localidad = $request->fk_localidad;
+
+        switch ($accion) {
+            case 0;
+                $resultado = DB::insert('insert into cliente set (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 1;
+                $resultado = DB::update('update cliente set fk_localidad = ?, nombre = ?, telefono = ?, email = ?, direccion = ? where id = ?', [$fk_localidad, $nombre, $telefono, $email, $direccion, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 2;
+                $resultado = DB::delete('delete cliente where id = ?', [$id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+        }
+
+        //$resultado = DB::insert('insert into cliente (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
+        //return response()->json_string = json_encode(array('result' => $resultado,));
     }
 
     public function getClientes()
