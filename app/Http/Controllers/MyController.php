@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Producto;
+use Producto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
@@ -91,7 +91,10 @@ class MyController extends Controller
     {
         $resultado = DB::select('select * from producto');
         //Retorna un array de objetos producto
-        return response()->json(["Producto" => $resultado]);
+        //return response()->json(["Producto" => $resultado]);
+        return response()->json(array_chunk($resultado, sizeof($resultado)));
+        //return response()->json_string = json_encode($resultado);
+
     }
 
     public function getProductoXid($id)
