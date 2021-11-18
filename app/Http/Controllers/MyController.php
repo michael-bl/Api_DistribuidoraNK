@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Producto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
@@ -91,10 +90,9 @@ class MyController extends Controller
     {
         $resultado = DB::select('select * from producto');
         //Retorna un array de objetos producto
-        //return response()->json(["Producto" => $resultado]);
-        return response()->json(array_chunk($resultado, sizeof($resultado)));
-        //return response()->json_string = json_encode($resultado);
-
+        //return response()->json_string = json_encode(array('Producto' => $resultado,));
+        //return response()->json(array_chunk($resultado, sizeof($resultado)));
+        return response()->json_string = json_encode($resultado);
     }
 
     public function getProductoXid($id)
@@ -136,7 +134,7 @@ class MyController extends Controller
 
         switch ($accion) {
             case 0;
-                $resultado = DB::insert('insert into cliente set (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
+                $resultado = DB::insert('insert into cliente set (fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?)', [$fk_localidad, $nombre, $telefono, $email, $direccion]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 1;
