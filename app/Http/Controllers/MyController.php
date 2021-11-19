@@ -89,10 +89,9 @@ class MyController extends Controller
     public function getProductos()
     {
         //$resultado = DB::select('select * from producto');
-        //$resultado = DB::table('producto')->get();
-        $array = array(DB::table('producto')->get());
+        $resultado = DB::table('producto')->get();
         //Retorna un array de objetos producto
-        return response()->json_string = json_encode($array);
+        return response()->json_string = json_encode($resultado);
     }
 
     public function getProductoXid($id)
