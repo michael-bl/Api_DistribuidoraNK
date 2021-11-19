@@ -89,7 +89,7 @@ class MyController extends Controller
     public function getProductos()
     {
         //$resultado = DB::select('select * from producto');
-        $resultado = DB::table('producto')->get()->toJson();
+        $resultado = DB::table('producto')->get()->toJson(JSON_OBJECT_AS_ARRAY);
         //Retorna un array de objetos producto
         return response()->json_string = json_encode($resultado);
     }
