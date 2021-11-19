@@ -88,10 +88,9 @@ class MyController extends Controller
 
     public function getProductos()
     {
-        $resultado = DB::select('select * from producto');
+        //$resultado = DB::select('select * from producto');
+        $resultado = DB::table('producto')->get()->toJson();
         //Retorna un array de objetos producto
-        //return response()->json_string = json_encode(array('Producto' => $resultado,));
-        //return response()->json(array_chunk($resultado, sizeof($resultado)));
         return response()->json_string = json_encode($resultado);
     }
 
@@ -101,9 +100,9 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function actualizaProducto($fk_unidad, $descripcion, $utildiad, $costo, $precio_venta, $id)
+    public function actualizaProducto($fk_unidad, $descripcion, $utilidad, $costo, $precio_venta, $id)
     {
-        $resultado = DB::update('update producto set fk_unidad = ?, descripcion = ?, utilidad = ?, costo = ?, precio_venta = ? where id = ?', [$fk_unidad, $descripcion, $utildiad, $costo, $precio_venta, $id]);
+        $resultado = DB::update('update producto set fk_unidad = ?, descripcion = ?, utilidad = ?, costo = ?, precio_venta = ? where id = ?', [$fk_unidad, $descripcion, $utilidad, $costo, $precio_venta, $id]);
         return response()->json_string = json_encode($resultado);
     }
 
@@ -134,7 +133,7 @@ class MyController extends Controller
 
         switch ($accion) {
             case 0;
-                $resultado = DB::insert('insert into cliente set (fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?)', [$fk_localidad, $nombre, $telefono, $email, $direccion]);
+                $resultado = DB::insert('insert into cliente set (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 1;
