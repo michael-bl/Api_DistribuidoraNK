@@ -127,9 +127,11 @@ class MyController extends Controller
         $email = $request->email;
         $accion = $request->accion;
         $nombre = $request->nombre;
+        $estado = $request->estado;
         $telefono = $request->telefono;
         $direccion = $request->direccion;
         $fk_localidad = $request->fk_localidad;
+        dd($nombre);
 
         switch ($accion) {
             case 0;
@@ -141,7 +143,7 @@ class MyController extends Controller
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 2;
-                $resultado = DB::delete('delete cliente where id = ?', [$id]);
+                $resultado = DB::delete('update cliente set estado = ? where id = ?', [$estado, $id]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
         }
@@ -162,15 +164,22 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function accionCliente($id, $fk_localidad, $nombre, $telefono, $email, $direccion, $accion)
+    public function accionCliente($id, $fk_localidad, $nombre, $telefono, $email, $direccion, $accion, $estado)
     {
 
-        if ($accion == 0) {
-            $resultado = DB::update('update cliente set fk_localidad = ?, nombre = ?, telefono = ?, email = ?, direccion = ? where id = ?', [$fk_localidad, $nombre, $telefono, $email, $direccion, $id]);
-            return response()->json_string = json_encode(array('result' => $resultado,));
-        } else {
-            $resultado = DB::delete('delete cliente where id = ?', [$id]);
-            return response()->json_string = json_encode(array('result' => $resultado,));
+        switch ($accion) {
+            case 0;
+                $resultado = DB::insert('insert into cliente set (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 1;
+                $resultado = DB::update('update cliente set fk_localidad = ?, nombre = ?, telefono = ?, email = ?, direccion = ? where id = ?', [$fk_localidad, $nombre, $telefono, $email, $direccion, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 2;
+                $resultado = DB::delete('update cliente set estado = ? where id = ?', [$estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
         }
     }
 
