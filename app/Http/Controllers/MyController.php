@@ -135,7 +135,7 @@ class MyController extends Controller
 
         switch ($accion) {
             case 0;
-                $resultado = DB::insert('insert into cliente set (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
+                $resultado = DB::insert('insert into cliente (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 1;
@@ -169,7 +169,7 @@ class MyController extends Controller
 
         switch ($accion) {
             case 0;
-                $resultado = DB::insert('insert into cliente set (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
+                $resultado = DB::insert('insert into cliente (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 1;
