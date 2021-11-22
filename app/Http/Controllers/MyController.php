@@ -121,7 +121,7 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function nuevoCliente2(Request $request)
+    public function accionCliente2(Request $request)
     {
         $id = $request->id;
         $email = $request->email;

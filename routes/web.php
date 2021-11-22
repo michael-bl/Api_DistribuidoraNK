@@ -42,11 +42,11 @@ Route::get('actualizaproducto', [MyController::class, 'actualizaProducto']);
 Route::get('eliminaproducto/{id}', [MyController::class, 'eliminaProducto']);
 
 //********************************RUTAS CLIENTES***********************************/
-Route::get('nuevocliente2', [MyController::class, 'nuevoCliente']);
 Route::get('clientes', [MyController::class, 'getClientes']);
 Route::get('clientexid', [MyController::class, 'getClienteXid']);
 Route::get('actualizacliente', [MyController::class, 'actualizaCliente']);
-Route::get('accioncliente/{id}/{localidad}/{nombre}/{telefono}/{email}/{direccion}/{accion}', [MyController::class, 'accionCliente']);
+Route::get('accioncliente/{id}/{localidad}/{nombre}/{telefono}/{email}/{direccion}/{accion}/{estado}', [MyController::class, 'accionCliente']);
+Route::post('accioncliente2', [MyController::class, 'accionCliente2']);
 
 //********************************RUTAS LOCALIDAD**********************************/
 Route::get('nuevalocalidad', [MyController::class, 'nuevaLocalidad']);
