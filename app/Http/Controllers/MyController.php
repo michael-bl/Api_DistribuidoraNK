@@ -147,9 +147,6 @@ class MyController extends Controller
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
         }
-
-        //$resultado = DB::insert('insert into cliente (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
-        //return response()->json_string = json_encode(array('result' => $resultado,));
     }
 
     public function getClientes()
