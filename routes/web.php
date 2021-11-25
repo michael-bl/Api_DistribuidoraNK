@@ -38,7 +38,7 @@ Route::get('eliminausuario/{id}', [MyController::class, 'eliminaUsuario']);
 Route::get('productos', [MyController::class, 'getProductos']);
 Route::get('productoxid', [MyController::class, 'getProductoXid']);
 Route::get('productoinactivo', [MyController::class, 'getProductosInactivos']);
-Route::get('accionproducto/{fk_unidad}, {descripcion}, {utilidad}, {costo}, {precio_venta}, {id}, {accion}, {estado}', [MyController::class, 'accionProducto']);
+Route::get('accionproducto/{fk_unidad}/{descripcion}/{utilidad}/{costo}/{precio_venta}/{id}/{accion}/{estado}', [MyController::class, 'accionProducto']);
 
 //********************************RUTAS CLIENTES***********************************/
 Route::get('clientes', [MyController::class, 'getClientes']);
