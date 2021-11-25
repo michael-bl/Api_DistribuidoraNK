@@ -35,11 +35,10 @@ Route::get('actualizausuario', [MyController::class, 'actualizaUsuario']);
 Route::get('eliminausuario/{id}', [MyController::class, 'eliminaUsuario']);
 
 //********************************RUTAS PRODUCTOS**********************************/
-Route::get('nuevoproducto', [MyController::class, 'nuevoProducto']);
 Route::get('productos', [MyController::class, 'getProductos']);
 Route::get('productoxid', [MyController::class, 'getProductoXid']);
-Route::get('actualizaproducto', [MyController::class, 'actualizaProducto']);
-Route::get('eliminaproducto/{id}', [MyController::class, 'eliminaProducto']);
+Route::get('productoinactivo', [MyController::class, 'getProductosInactivos']);
+Route::get('accionproducto/{fk_unidad}, {descripcion}, {utilidad}, {costo}, {precio_venta}, {id}, {accion}, {estado}', [MyController::class, 'accionProducto']);
 
 //********************************RUTAS CLIENTES***********************************/
 Route::get('clientes', [MyController::class, 'getClientes']);

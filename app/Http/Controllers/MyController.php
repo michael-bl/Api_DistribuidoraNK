@@ -80,47 +80,51 @@ class MyController extends Controller
 
 
     //********************************CRUD PRODUCTOS********************************/
-    public function nuevoProducto($id, $fk_unidad, $descripcion, $utilidad, $costo, $precio_venta)
-    {
-        $resultado = DB::insert('insert into producto (id, fk_unidad, descripcion, utilidad, costo, precio_venta) values (?, ?, ?, ?, ?, ?)', [$id, $fk_unidad, $descripcion, $utilidad, $costo, $precio_venta]);
-        return response()->json_string = json_encode($resultado);
-    }
-
+    /** Devuelve una lista de productos activos*/
     public function getProductos()
     {
-        //$resultado = DB::select('select * from producto');
-        $resultado = DB::table('producto')->get();
-        //Retorna un array de objetos producto
+        $resultado = DB::select('select * from view_productos');
         return response()->json_string = json_encode($resultado);
     }
 
+    /** Devuelve lista de productos inactivos*/
+    public function getProductosInactivos()
+    {
+        $resultado = DB::select('select * from view_productos_inactivos');
+        return response()->json_string = json_encode($resultado);
+    }
+
+    /** Devuelve producto segun id*/
     public function getProductoXid($id)
     {
         $resultado = DB::select('select * from producto where id = ?', [$id]);
         return response()->json_string = json_encode($resultado);
     }
 
-    public function actualizaProducto($fk_unidad, $descripcion, $utilidad, $costo, $precio_venta, $id)
+    /** Funcion realiza 3 acciones distintas sobre objeto producto, inserta nuevo, actualiza o deshabilita */
+    public function accionProducto($fk_unidad, $descripcion, $utilidad, $costo, $precio_venta, $id, $accion, $estado)
     {
-        $resultado = DB::update('update producto set fk_unidad = ?, descripcion = ?, utilidad = ?, costo = ?, precio_venta = ? where id = ?', [$fk_unidad, $descripcion, $utilidad, $costo, $precio_venta, $id]);
-        return response()->json_string = json_encode($resultado);
-    }
 
-    public function eliminaProducto($id)
-    {
-        $resultado = DB::delete('delete producto where id = ?', [$id]);
-        return response()->json_string = json_encode($resultado);
+        switch ($accion) {
+            case 0;
+                $resultado = DB::insert('insert into producto (id, fk_unidad, descripcion, utilidad, costo, precio_venta, estado) values (?, ?, ?, ?, ?, ?, ?)', [$id, $fk_unidad, $descripcion, $utilidad, $costo, $precio_venta, $estado]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 1;
+                $resultado = DB::update('update producto set fk_unidad = ?, descripcion = ?, utilidad = ?, costo = ?, precio_venta = ?, estado = ? where id = ?', [$fk_unidad, $descripcion, $utilidad, $costo, $precio_venta, $estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 2;
+                $resultado = DB::update('update producto set estado = ? where id = ?', [$estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+        }
     }
 
 
 
     //********************************CRUD CLIENTES********************************/
-    public function nuevoCliente($id, $fk_localidad, $nombre, $telefono, $email, $direccion)
-    {
-        $resultado = DB::insert('insert into cliente (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
-        return response()->json_string = json_encode($resultado);
-    }
-
+    //** de momento esta funcion no sirve*/
     public function accionCliente2(Request $request)
     {
         $id = $request->id;
@@ -161,6 +165,7 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
+    /** Funcion realiza 3 acciones distintas sobre objeto cliente, inserta nuevo, actualiza o deshabilita */
     public function accionCliente($id, $fk_localidad, $nombre, $telefono, $email, $direccion, $accion, $estado)
     {
 
@@ -174,7 +179,7 @@ class MyController extends Controller
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 2;
-                $resultado = DB::delete('update cliente set estado = ? where id = ?', [$estado, $id]);
+                $resultado = DB::update('update cliente set estado = ? where id = ?', [$estado, $id]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
         }
