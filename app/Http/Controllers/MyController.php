@@ -107,11 +107,11 @@ class MyController extends Controller
 
         switch ($accion) {
             case 0;
-                $resultado = DB::insert('insert into producto (id, fk_unidad, descripcion, utilidad, costo, precio_venta, estado) values (?, ?, ?, ?, ?, ?, ?)', [$id, $fk_unidad, $descripcion, $utilidad, $precio_compra, $precio_venta, $estado]);
+                $resultado = DB::insert('insert into producto (id, fk_unidad, descripcion, utilidad, precio_compra, precio_venta, estado) values (?, ?, ?, ?, ?, ?, ?)', [$id, $fk_unidad, $descripcion, $utilidad, $precio_compra, $precio_venta, $estado]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 1;
-                $resultado = DB::update('update producto set fk_unidad = ?, descripcion = ?, utilidad = ?, costo = ?, precio_venta = ?, estado = ? where id = ?', [$fk_unidad, $descripcion, $utilidad, $precio_compra, $precio_venta, $estado, $id]);
+                $resultado = DB::update('update producto set fk_unidad = ?, descripcion = ?, utilidad = ?, precio_compra = ?, precio_venta = ?, estado = ? where id = ?', [$fk_unidad, $descripcion, $utilidad, $precio_compra, $precio_venta, $estado, $id]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 2;
