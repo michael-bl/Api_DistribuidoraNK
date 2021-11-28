@@ -102,12 +102,12 @@ class MyController extends Controller
     }
 
     /** Funcion realiza 3 acciones distintas sobre objeto producto, inserta nuevo, actualiza o deshabilita */
-    public function accionProducto($fk_unidad, $descripcion, $utilidad, $precio_compra, $precio_venta, $id, $accion, $estado)
+    public function accionProducto($id, $fk_unidad, $descripcion, $utilidad, $precio_compra, $precio_venta, $accion, $estado)
     {
 
         switch ($accion) {
             case 0;
-                $resultado = DB::insert('insert into producto (id, fk_unidad, descripcion, utilidad, precio_compra, precio_venta, estado) values (?, ?, ?, ?, ?, ?, ?)', [$id, $fk_unidad, $descripcion, $utilidad, $precio_compra, $precio_venta, $estado]);
+                $resultado = DB::insert('insert into producto (id, fk_unidad, descripcion, utilidad, precio_compra, precio_venta, estado) values (?, ?, ?, ?, ?, ?, ?)', [null, $fk_unidad, $descripcion, $utilidad, $precio_compra, $precio_venta, $estado]);
                 return response()->json_string = json_encode(array('result' => $resultado,));
                 break;
             case 1;
