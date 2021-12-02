@@ -187,15 +187,17 @@ class MyController extends Controller
 
 
     //********************************CRUD LOCALIDAD********************************/
-    public function nuevaLocalidad($id, $localidad)
+    /** Devuelve una lista de localidades activas*/
+    public function getLocalidades()
     {
-        $resultado = DB::insert('insert into localidad (id, localidad) values (?, ?)', [$id, $localidad]);
+        $resultado = DB::select('select * from view_localidades');
         return response()->json_string = json_encode($resultado);
     }
 
-    public function getLocalidad()
+    /** Devuelve lista de localidades inactivas*/
+    public function getLocalidadesInactivas()
     {
-        $resultado = DB::select('select * from localidad');
+        $resultado = DB::select('select * from view_localidades_inactivas');
         return response()->json_string = json_encode($resultado);
     }
 
@@ -205,16 +207,24 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function actualizaLocalidad($localidad, $id)
+    /** Funcion realiza 3 acciones distintas sobre objeto localidad, inserta nuevo, actualiza o deshabilita */
+    public function accionLocalidad($id, $ocalidad, $accion, $estado)
     {
-        $resultado = DB::update('update localidad set localidad = ? where id = ?', [$localidad, $id]);
-        return response()->json_string = json_encode($resultado);
-    }
 
-    public function eliminaLocalidad($id)
-    {
-        $resultado = DB::delete('delete localidad where id = ?', [$id]);
-        return response()->json_string = json_encode($resultado);
+        switch ($accion) {
+            case 0;
+                $resultado = DB::insert('insert into localidad (id, localidad, estado) values (?, ?, ?)', [$id, $localidad, $estado]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 1;
+                $resultado = DB::update('update localidad set localidad = ?, estado = ? where id = ?', [$localidad, $estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 2;
+                $resultado = DB::update('update localidad set estado = ? where id = ?', [$estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+        }
     }
 
     //********************************CRUD UNIDAD DE MEDIDA********************************/
