@@ -188,20 +188,20 @@ class MyController extends Controller
 
     //********************************CRUD LOCALIDAD********************************/
     /** Devuelve una lista de localidades activas*/
-    public function localidades()
+    public function getLocalidades()
     {
         $resultado = DB::select('select * from view_localidades');
         return response()->json_string = json_encode($resultado);
     }
 
     /** Devuelve lista de localidades inactivas*/
-    public function localidadesInactivas()
+    public function getLocalidadesInactivas()
     {
         $resultado = DB::select('select * from view_localidades_inactivas');
         return response()->json_string = json_encode($resultado);
     }
 
-    public function localidadXid($id)
+    public function getLocalidadXid($id)
     {
         $resultado = DB::select('select * from localidad where id = ?', [$id]);
         return response()->json_string = json_encode($resultado);
