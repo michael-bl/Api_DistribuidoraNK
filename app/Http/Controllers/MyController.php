@@ -17,15 +17,15 @@ class MyController extends Controller
 
     //********************************CRUD PROVEEDORES********************************/
 
-    public function nuevoProveedor($id, $nombre, $telefono, $email)
+    public function getProveedores()
     {
-        $resultado = DB::insert('insert into proveedor (id, nombre, telefono, email) values (?, ?, ?, ?)', [$id, $nombre, $telefono, $email]);
+        $resultado = DB::select('select * from view_proveedores');
         return response()->json_string = json_encode($resultado);
     }
 
-    public function getProveedores()
+    public function getProveedoresInactivos()
     {
-        $resultado = DB::select('select * from proveedor');
+        $resultado = DB::select('select * from view_proveedores_inactivos');
         return response()->json_string = json_encode($resultado);
     }
 
@@ -35,28 +35,36 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function actualizaProveedor($id, $nombre, $telefono, $email)
+    /** Funcion realiza 3 acciones distintas sobre objeto proveedor, inserta nuevo, actualiza o deshabilita */
+    public function accionProveedor($id, $nombre, $telefono, $email, $accion, $estado)
     {
-        $resultado = DB::update('update proveedor set nombre = ?, telefono = ?, email = ? where id = ?', [$nombre, $telefono, $email, $id]);
-        return response()->json_string = json_encode($resultado);
-    }
 
-    public function eliminaProveedor($id)
-    {
-        $resultado = DB::delete('delete proveedor where id = ?', [$id]);
-        return response()->json_string = json_encode($resultado);
+        switch ($accion) {
+            case 0;
+                $resultado = DB::insert('insert into proveedor (id, nombre, telefono, email, estado) values (?, ?, ?, ?, ?)', [$id, $nombre, $telefono, $email, $estado]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 1;
+                $resultado = DB::update('update proveedor set nombre = ?, telefono = ?, email = ?, estado = ? where id = ?', [$nombre, $telefono, $email, $estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 2;
+                $resultado = DB::update('update proveedor set estado = ? where id = ?', [$estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+        }
     }
 
     //********************************CRUD USUARIOS********************************/
-    public function nuevoUsuario($id, $fk_localidad, $nombre, $pass, $telefono, $email, $direccion)
+    public function getUsuarios()
     {
-        $resultado = DB::insert('insert into usuario (id, fk_localidad, nombre, pass, telefono, email, direccion) values (?, ?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $pass, $telefono, $email, $direccion]);
+        $resultado = DB::select('select * from view_usuarios');
         return response()->json_string = json_encode($resultado);
     }
 
-    public function getUsuarios()
+    public function getUsuariosInactivos()
     {
-        $resultado = DB::select('select * from usuario');
+        $resultado = DB::select('select * from view_usuarios_inactivos');
         return response()->json_string = json_encode($resultado);
     }
 
@@ -66,16 +74,24 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function actualizaUsuario($fk_localidad, $nombre, $pass, $telefono, $email, $direccion, $id)
+    /** Funcion realiza 3 acciones distintas sobre objeto usuario, inserta nuevo, actualiza o deshabilita */
+    public function accionUsuario($id, $fk_localidad, $nombre, $pass, $telefono, $email, $direccion, $accion, $estado)
     {
-        $resultado = DB::update('update usuario set fk_localidad = ?, nombre = ?, pass = ?, telefono = ?, email = ?, direccion = ? where id = ?', [$fk_localidad, $nombre, $pass, $telefono, $email, $direccion, $id]);
-        return response()->json_string = json_encode($resultado);
-    }
 
-    public function eliminaUsuario($id)
-    {
-        $resultado = DB::delete('delete usuario where id = ?', [$id]);
-        return response()->json_string = json_encode($resultado);
+        switch ($accion) {
+            case 0;
+                $resultado = DB::insert('insert into usuario (id, fk_localidad, nombre, pass, telefono, email, direccion, estado) values (?, ?, ?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $pass, $telefono, $email, $direccion, $estado]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 1;
+                $resultado = DB::update('update usuario set fk_localidad = ?, nombre = ?, pass = ?, telefono = ?, email = ?, direccion = ?, estado = ? where id = ?', [$id, $fk_localidad, $nombre, $pass, $telefono, $email, $direccion, $estado]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 2;
+                $resultado = DB::update('update usuario set estado = ? where id = ?', [$estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+        }
     }
 
 
@@ -87,14 +103,12 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    /** Devuelve lista de productos inactivos*/
     public function getProductosInactivos()
     {
         $resultado = DB::select('select * from view_productos_inactivos');
         return response()->json_string = json_encode($resultado);
     }
 
-    /** Devuelve producto segun id*/
     public function getProductoXid($id)
     {
         $resultado = DB::select('select * from producto where id = ?', [$id]);
@@ -122,40 +136,16 @@ class MyController extends Controller
     }
 
 
-
     //********************************CRUD CLIENTES********************************/
-    //** de momento esta funcion no sirve*/
-    public function accionCliente2(Request $request)
-    {
-        $id = $request->id;
-        $email = $request->email;
-        $accion = $request->accion;
-        $nombre = $request->nombre;
-        $estado = $request->estado;
-        $telefono = $request->telefono;
-        $direccion = $request->direccion;
-        $fk_localidad = $request->fk_localidad;
-        dd($nombre);
-
-        switch ($accion) {
-            case 0;
-                $resultado = DB::insert('insert into cliente (id, fk_localidad, nombre, telefono, email, direccion) values (?, ?, ?, ?, ?, ?)', [$id, $fk_localidad, $nombre, $telefono, $email, $direccion]);
-                return response()->json_string = json_encode(array('result' => $resultado,));
-                break;
-            case 1;
-                $resultado = DB::update('update cliente set fk_localidad = ?, nombre = ?, telefono = ?, email = ?, direccion = ? where id = ?', [$fk_localidad, $nombre, $telefono, $email, $direccion, $id]);
-                return response()->json_string = json_encode(array('result' => $resultado,));
-                break;
-            case 2;
-                $resultado = DB::delete('update cliente set estado = ? where id = ?', [$estado, $id]);
-                return response()->json_string = json_encode(array('result' => $resultado,));
-                break;
-        }
-    }
-
     public function getClientes()
     {
         $resultado = DB::select('select * from cliente');
+        return response()->json_string = json_encode($resultado);
+    }
+
+    public function getClientesInactivos()
+    {
+        $resultado = DB::select('select * from view_localidades_inactivas');
         return response()->json_string = json_encode($resultado);
     }
 
@@ -194,7 +184,6 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    /** Devuelve lista de localidades inactivas*/
     public function getLocalidadesInactivas()
     {
         $resultado = DB::select('select * from view_localidades_inactivas');
@@ -208,7 +197,7 @@ class MyController extends Controller
     }
 
     /** Funcion realiza 3 acciones distintas sobre objeto localidad, inserta nuevo, actualiza o deshabilita */
-    public function accionLocalidad($id, $ocalidad, $accion, $estado)
+    public function accionLocalidad($id, $localidad, $accion, $estado)
     {
 
         switch ($accion) {
@@ -228,15 +217,15 @@ class MyController extends Controller
     }
 
     //********************************CRUD UNIDAD DE MEDIDA********************************/
-    public function nuevaUnidad($id, $detalle)
+    public function getUnidades()
     {
-        $resultado = DB::insert('insert into unidad (id, detalle) values (?, ?)', [$id, $detalle]);
+        $resultado = DB::select('select * from view_unidades');
         return response()->json_string = json_encode($resultado);
     }
 
-    public function getUnidad()
+    public function getUnidadesInactivas()
     {
-        $resultado = DB::select('select * from unidad');
+        $resultado = DB::select('select * from view_unidades_inactivas');
         return response()->json_string = json_encode($resultado);
     }
 
@@ -246,29 +235,31 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function actualizaUnidad($detalle, $id)
+    /** Funcion realiza 3 acciones distintas sobre objeto unidad, inserta nuevo, actualiza o deshabilita */
+    public function accionUnidad($id, $detalle, $accion, $estado)
     {
-        $resultado = DB::update('update unidad set detalle = ? where id = ?', [$detalle, $id]);
-        return response()->json_string = json_encode($resultado);
-    }
 
-    public function eliminaUnidad($id)
-    {
-        $resultado = DB::delete('delete unidad where id = ?', [$id]);
-        return response()->json_string = json_encode($resultado);
+        switch ($accion) {
+            case 0;
+                $resultado = DB::insert('insert into unidad (id, detalle, estado) values (?, ?, ?)', [$id, $detalle, $estado]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 1;
+                $resultado = DB::update('update unidad set localidad = ?, estado = ? where id = ?', [$detalle, $estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 2;
+                $resultado = DB::update('update unidad set estado = ? where id = ?', [$estado, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+        }
     }
 
 
     //********************************CRUD CABECERA FACTURA********************************/
-    public function nuevaCabeceraFactura($id, $tipo, $fk_cliente, $fecha)
+    public function getCabecerasFacturas()
     {
-        $resultado = DB::insert('insert into cabecera_factura (id, tipo, fk_cliente, fecha) values (?, ?, ?, ?)', [$id, $tipo, $fk_cliente, $fecha]);
-        return response()->json_string = json_encode($resultado);
-    }
-
-    public function getCabeceraFactura()
-    {
-        $resultado = DB::select('select * from cabecera_factura');
+        $resultado = DB::select('select * from view_cabecera_facturas');
         return response()->json_string = json_encode($resultado);
     }
 
@@ -278,28 +269,18 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function actualizaCabeceraFactura($tipo, $fk_cliente, $fecha, $id)
+    public function actualizaCabeceraFactura($id, $tipo, $fk_cliente, $fecha)
     {
         $resultado = DB::update('update cabecera_factura set tipo = ?, fk_cliente = ?, fecha = ? where id = ?', [$tipo, $fk_cliente, $fecha, $id]);
         return response()->json_string = json_encode($resultado);
     }
 
-    public function eliminaCabeceraFactura($id)
-    {
-        $resultado = DB::delete('delete cabecera_factura where id = ?', [$id]);
-        return response()->json_string = json_encode($resultado);
-    }
+
 
     //********************************CRUD DETALLE FACTURA********************************/
-    public function nuevoDetalleFactura($id, $fk_cabecera, $fk_producto, $utilidad, $precio_k, $precio_cliente)
+    public function getDetallesFacturas()
     {
-        $resultado = DB::insert('insert into detalle_factura (id, fk_cabecera, fk_producto, utilidad, precio_k, precio_cliente) values (?, ?, ?, ?, ?, ?)', [$id, $fk_cabecera, $fk_producto, $utilidad, $precio_k, $precio_cliente]);
-        return response()->json_string = json_encode($resultado);
-    }
-
-    public function getDetalleFactura()
-    {
-        $resultado = DB::select('select * from detalle_factura');
+        $resultado = DB::select('select * from view_detalle_facturas');
         return response()->json_string = json_encode($resultado);
     }
 
@@ -309,15 +290,19 @@ class MyController extends Controller
         return response()->json_string = json_encode($resultado);
     }
 
-    public function actualizaDetalleFactura($fk_cabecera, $fk_producto, $utilidad, $precio_k, $precio_cliente, $id)
+    /** Funcion realiza 3 acciones distintas sobre objeto detalle factura, inserta nuevo, actualiza o deshabilita */
+    public function accionDetalleFactura($id, $fk_cabecera, $fk_producto, $utilidad, $precio_compra, $precio_venta, $accion)
     {
-        $resultado = DB::update('update detalle_factura set fk_cabecera = ?, fk_producto= ?, utilidad= ?, precio_k= ?, precio_cliente = ? where id = ?', [$fk_cabecera, $fk_producto, $utilidad, $precio_k, $precio_cliente, $id]);
-        return response()->json_string = json_encode($resultado);
-    }
 
-    public function eliminaDetalleFactura($id)
-    {
-        $resultado = DB::delete('delete detalle_factura where id = ?', [$id]);
-        return response()->json_string = json_encode($resultado);
+        switch ($accion) {
+            case 0;
+                $resultado = DB::insert('insert into detalle_factura (id, fk_cabecera, fk_producto, utilidad, precio_compra, precio_venta) values (?, ?, ?, ?, ?, ?)', [$id, $fk_cabecera, $fk_producto, $utilidad, $precio_compra, $precio_venta]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+            case 1;
+                $resultado = DB::update('update detalle_factura set fk_cabecera = ?, fk_producto = ?, utilidad = ?, precio_compra = ?, precio_venta = ? where id = ?', [$fk_cabecera, $fk_producto, $utilidad, $precio_compra, $precio_venta, $id]);
+                return response()->json_string = json_encode(array('result' => $resultado,));
+                break;
+        }
     }
 }
