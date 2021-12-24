@@ -139,13 +139,13 @@ class MyController extends Controller
     //********************************CRUD CLIENTES********************************/
     public function getClientes()
     {
-        $resultado = DB::select('select * from cliente');
+        $resultado = DB::select('select * from view_clientes');
         return response()->json_string = json_encode($resultado);
     }
 
     public function getClientesInactivos()
     {
-        $resultado = DB::select('select * from view_localidades_inactivas');
+        $resultado = DB::select('select * from view_clientes_inactivos');
         return response()->json_string = json_encode($resultado);
     }
 
