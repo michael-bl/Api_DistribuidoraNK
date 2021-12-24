@@ -10,7 +10,7 @@ class MyController extends Controller
 
     public function login($usuario, $pass)
     {
-        $resultado = DB::select('select id, pass, nombre from usuario where id=(?) and pass=(?)', [$usuario, $pass]);
+        $resultado = DB::select('select * from usuario where id=(?) and pass=(?)', [$usuario, $pass]);
         return response()->json_string = json_encode($resultado);
     }
 
