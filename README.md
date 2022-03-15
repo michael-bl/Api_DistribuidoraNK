@@ -1,2 +1,2 @@
 # Api_DistribuidoraNK
- Api para aplicacion de escritorio y movil
+ Api que responde a aplicacion de escritorio y movil (android).
